@@ -1,7 +1,14 @@
 
 #include <mysortfunctions.h>
 
-void merge(int i, int m, int f){
+void merge(std::vector<int> &v, std::vector<int> &aux){
+
+    int tam = sizeof(v)/4;
+    int i = 0;
+    int j = 0;
+    int f = tam - 1;
+    int m = (tam)/2 - 1;
+
     int i1 = i;
     int i2 = i;
     int i3 = m + 1;
@@ -35,14 +42,13 @@ void mymergesort_recursive(std::vector<int> &v, SortStats &stats) {
     // the tester already knows the size of v and the algorithm name, it already measures time
     // you may set custom1 field if you want to measure anything else.
     stats.custom1 = 2;
-
-    int aux[tam];
     
     int tam = sizeof(v)/4;
     int i;
     int f = tam - 1;
     int m = (tam)/2 - 1;
 
+    int aux[tam];
     int v1[m + 1];
     int v2[tam - m - 1];
 
@@ -54,9 +60,9 @@ void mymergesort_recursive(std::vector<int> &v, SortStats &stats) {
 
     i = 0;
     if (i < f){
-        mymergesort_recursive(v1);
-        mymergesort_recursive(v2);
-        merge(i, m, f);
+        mymergesort_recursive(v1, stats);
+        mymergesort_recursive(v2, stats);
+        merge(v, aux);
     }
 
 }
@@ -71,11 +77,11 @@ void mymergesort_iterative(std::vector<int> &v, SortStats &stats) {
     // you may set custom1 field if you want to measure anything else.
     stats.custom1 = 2;
 
-    int aux[tam];
-
     int tam = sizeof(v)/4;
     int i = 0;
     int f = tam - 1;
+    int aux[tam];
+    int m = (tam)/2 - 1;
 
     int b = 1; // b: tamanho de cada bloco 
     while (b < f){
@@ -83,7 +89,7 @@ void mymergesort_iterative(std::vector<int> &v, SortStats &stats) {
         while (p + b <= f){
 
             int r = f;
-            if f > p-1 + 2*b
+            if (f > p-1 + 2*b)
                 r = p-1 + 2*b;
 
             m = p + b - 1;
