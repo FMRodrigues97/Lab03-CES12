@@ -11,7 +11,7 @@ void myradixsort(std::vector<int> &v, SortStats &stats) {
     // you may set custom1 field if you want to measure anything else.
     stats.custom1 = 2;
 
-    queue q[0..base-1];
+    /*queue q[0..base-1];
     for (i=0, factor = 1; i < d; factor *= base, i++) {
 
         for (j = 1; j <= n; j++)
@@ -20,6 +20,6 @@ void myradixsort(std::vector<int> &v, SortStats &stats) {
         for (j = 0, k=1; j < base; j++)
             while (!q[j].isEmpty())
                 v[k++] = q[j].dequeue();
-    }
+    }*/
 
 }

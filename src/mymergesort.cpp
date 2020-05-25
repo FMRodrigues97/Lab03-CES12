@@ -48,9 +48,9 @@ void mymergesort_recursive(std::vector<int> &v, SortStats &stats) {
     int f = tam - 1;
     int m = (tam)/2 - 1;
 
-    int aux[tam];
-    int v1[m + 1];
-    int v2[tam - m - 1];
+    std::vector<int> aux(tam);
+    std::vector<int> v1(m + 1);
+    std::vector<int> v2(tam - m -1);
 
     for (i = 0; i <= m; i++)
         v1[i] = v[i];
@@ -80,8 +80,9 @@ void mymergesort_iterative(std::vector<int> &v, SortStats &stats) {
     int tam = sizeof(v)/4;
     int i = 0;
     int f = tam - 1;
-    int aux[tam];
     int m = (tam)/2 - 1;
+
+    std::vector<int> aux(tam);
 
     int b = 1; // b: tamanho de cada bloco 
     while (b < f){
@@ -93,7 +94,7 @@ void mymergesort_iterative(std::vector<int> &v, SortStats &stats) {
                 r = p-1 + 2*b;
 
             m = p + b - 1;
-            merge (p, m, r);
+            merge (v, aux);
             p += 2*b;
         }
 
