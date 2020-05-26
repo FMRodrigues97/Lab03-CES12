@@ -32,21 +32,51 @@ int achar_mediana(std::vector<int> &v){
 
 }
 
-int Partition_mediana(std::vector<int> &v){
+int Partition_mediana(std::vector<int> &v, int esquerda, int direita){
 
     int mediana = achar_mediana(v);
-
+    
     int tam = sizeof(v)/4;
     int pivo = v[mediana];
-    int L = tam;
-    int R = 0;
+    int L = esquerda + 1;
+    int R = direita;
 
     while (true){
 
-        while (L < 0 && v[L] < pivo)
+        while (L < direita && v[L] < pivo)
             L++;
         
-        while (R > tam && v[R] >= pivo)
+        while (R > esquerda && v[R] >= pivo)
+            R--;
+
+        if (L >= R)
+            break;
+
+        int aux = v[L];
+        v[L] = v[R];
+        v[R] = aux;
+    }
+
+    v[esquerda] = v[R];
+    v[R] = pivo;
+
+    return R;
+
+}
+
+int Partition_fixo(std::vector<int> &v, int esquerda, int direita){
+
+    int tam = sizeof(v)/4;
+    int pivo = v[0];
+    int L = esquerda + 1;
+    int R = direita;
+
+    while (true){
+
+        while (L < direita && v[L] < pivo)
+            L++;
+        
+        while (R > esquerda && v[R] >= pivo)
             R--;
 
         if (L >= R)
@@ -64,34 +94,46 @@ int Partition_mediana(std::vector<int> &v){
 
 }
 
-int Partition_fixo(std::vector<int> &v){
+void QuickSort2 (std::vector<int> &v, int min, int max){
 
-    int tam = sizeof(v)/4;
-    int pivo = v[0];
-    int L = tam;
-    int R = 0;
-
-    while (true){
-
-        while (L < 0 && v[L] < pivo)
-            L++;
-        
-        while (R > tam && v[R] >= pivo)
-            R--;
-
-        if (L >= R)
-            break;
-
-        int aux = v[L];
-        v[L] = v[R];
-        v[R] = aux;
+    if (min < max){
+        int p = Partition_mediana (v, min, max);
+        QuickSort2 (v, min, p - 1);
+        QuickSort2 (v, p + 1, max);
     }
 
-    v[tam] = v[R];
-    v[R] = pivo;
+}
 
-    return R;
+void QuickSort1 (std::vector<int> &v, int min, int max){
+    while (min < max){
+        int p = Partition_mediana (v, min, max);
 
+        if (p - min < max - p){
+            QuickSort1 (v, min, p - 1);
+            min = p + 1;
+        }
+
+        else{
+            QuickSort1 (v, p + 1, max);
+            max = p - 1;
+        }
+    }
+}
+
+void QuickSortPivo (std::vector<int> &v, int min, int max){
+    while (min < max){
+        int p = Partition_fixo (v, min, max);
+
+        if (p - min < max - p){
+            QuickSortPivo (v, min, p - 1);
+            min = p + 1;
+        }
+
+        else{
+            QuickSortPivo (v, p + 1, max);
+            max = p - 1;
+        }
+    }
 }
 
 /// the most comon quicksort, with 2 recursive calls
@@ -107,25 +149,8 @@ void myquicksort_2recursion_medianOf3(std::vector<int> &v, SortStats &stats) {
     int tam = sizeof(v)/4;
     int min = 0;
     int max = tam - 1;
-    int i = 0;
-    int p;
 
-    int m = achar_mediana(v);
-
-    std::vector<int> v1(m + 1);
-    std::vector<int> v2(tam - m -1);
-
-    for (i = 0; i <= m; i++)
-        v1[i] = v[i];
-    
-    for (i = m + 1; i < tam; i++)
-        v2[i - m - 1] = v[i];
-
-    if (min < max){
-        p = Partition_mediana (v);
-        myquicksort_2recursion_medianOf3 (v1, stats);
-        myquicksort_2recursion_medianOf3 (v2, stats);
-    }
+    QuickSort2 (v, min, max);
 
 }// function myquicksort_2recursion_medianOf3
 
@@ -142,34 +167,8 @@ void myquicksort_1recursion_medianOf3(std::vector<int> &v, SortStats &stats) {
     int tam = sizeof(v)/4;
     int min = 0;
     int max = tam - 1;
-    int i = 0;
-    int p;
 
-    int m = achar_mediana(v);
-
-    std::vector<int> v1(m + 1);
-    std::vector<int> v2(tam - m -1);
-
-    for (i = 0; i <= m; i++)
-        v1[i] = v[i];
-    
-    for (i = m + 1; i < tam; i++)
-        v2[i - m - 1] = v[i];
-
-    while (min < max){
-
-        p = Partition_mediana (v);
-
-        if (p - min < max - p){
-            myquicksort_1recursion_medianOf3(v1, stats);
-            min = p + 1;
-        }
-
-        else{
-            myquicksort_1recursion_medianOf3(v2, stats);
-            min = p - 1;
-        }
-    }
+    QuickSort1 (v, min, max);
 
 } // function myquicksort_1recursion_medianOf3
 
@@ -188,23 +187,7 @@ void myquicksort_fixedPivot(std::vector<int> &v, SortStats &stats) {
     int tam = sizeof(v)/4;
     int min = 0;
     int max = tam - 1;
-    int i = 0;
-    int p;
 
-    if (min < max){
-        p = Partition_fixo (v);
-
-        std::vector<int> v1(p + 1);
-        std::vector<int> v2(tam - p -1);
-
-        for (i = 0; i <= p; i++)
-            v1[i] = v[i];
-        
-        for (i = p + 1; i < tam; i++)
-            v2[i - p - 1] = v[i];
-
-        myquicksort_2recursion_medianOf3 (v1, stats);
-        myquicksort_2recursion_medianOf3 (v2, stats);
-    }
+    QuickSortPivo (v, min, max);
 
 } // myquicksort_fixedPivot
