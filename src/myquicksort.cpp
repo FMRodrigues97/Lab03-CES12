@@ -7,18 +7,18 @@ int Partition_mediana(std::vector<int> &v, int esquerda, int direita){
 
     // Achar a mediana
     int tam = v.size();
+    int pivo = v[esquerda];
 
-    if ( (v[0] >= v[tam/2] && v[0] <= v[tam - 1]) || (v[0] <= v[tam/2] && v[0] >= v[tam - 1]) )
-        mediana = 0;
+    if ( (v[esquerda] >= v[(esquerda + direita)/2] && v[esquerda] <= v[direita]) || (v[esquerda] <= v[(esquerda + direita)/2] && v[esquerda] >= v[direita]) )
+        pivo = v[esquerda];
     
-    if ( (v[tam/2] >= v[0] && v[tam/2] <= v[tam - 1]) || (v[tam/2] <= v[0] && v[tam/2] >= v[tam - 1]) )
-        mediana = tam/2;
+    if ( (v[(esquerda + direita)/2] >= v[esquerda] && v[(esquerda + direita)/2] <= v[direita]) || (v[(esquerda + direita)/2] <= v[esquerda] && v[(esquerda + direita)/2] >= v[direita]) )
+        pivo = v[(esquerda + direita)/2];
 
-    if ( (v[tam -1] >= v[0] && v[tam - 1] <= v[tam/2]) || (v[tam -1] <= v[0] && v[tam - 1] >= v[tam/2]) )
-        mediana = tam - 1;
+    if ( (v[direita] >= v[esquerda] && v[direita] <= v[(esquerda + direita)/2]) || (v[direita] <= v[esquerda] && v[direita] >= v[(esquerda + direita)/2]) )
+        pivo = v[direita];
     
     
-    int pivo = v[mediana];
     int L = esquerda + 1;
     int R = direita;
 
@@ -68,7 +68,7 @@ int Partition_fixo(std::vector<int> &v, int esquerda, int direita){
         v[R] = aux;
     }
 
-    v[tam] = v[R];
+    v[esquerda] = v[R];
     v[R] = pivo;
 
     return R;
@@ -78,9 +78,11 @@ int Partition_fixo(std::vector<int> &v, int esquerda, int direita){
 void QuickSort2 (std::vector<int> &v, int min, int max){
 
     if (min < max){
+
         int p = Partition_mediana (v, min, max);
         QuickSort2 (v, min, p - 1);
         QuickSort2 (v, p + 1, max);
+
     }
 
 }

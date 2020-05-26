@@ -1,5 +1,6 @@
 
 #include <mysortfunctions.h>
+#include <math.h>
 
 void merge(std::vector<int> &v, std::vector<int> &aux, int inicio, int meio, int fim){
 
@@ -68,7 +69,7 @@ void MergeSortIterativo(std::vector<int> &v, std::vector<int> &aux, int inicio, 
 
 void mymergesort_recursive(std::vector<int> &v, SortStats &stats) {
     // you need to set the counting of recursive recursive_calls
-    stats.recursive_calls = 1;
+    stats.recursive_calls = 0;
     // you need to set the depth = the maximum height of the tree of recursion calls. 
     stats.depth_recursion_stack = 1;
     // the tester already knows the size of v and the algorithm name, it already measures time
