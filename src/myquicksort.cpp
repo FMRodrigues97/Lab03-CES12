@@ -3,40 +3,21 @@
 
 // you only need to mantain the headers. You can create aux funcs, objects, or create a generic quicksort that can work with different functions to select the pivot.
 
-int achar_mediana(std::vector<int> &v){
-
-    int tam = sizeof(v)/4; 
-    std::vector<int> vmed(3);
-    vmed[0] = v[0];
-    vmed[1] = v[tam/2];
-    vmed[2] = v[tam - 1];
-
-    int min = vmed[0];
-    int max = vmed[0];
-    int i = 0;
-    int mediana;
-
-    for (i = 1; i < 3; i++){
-        if (vmed[i] >= max)
-            max = vmed[i];
-        if (vmed[i] <= min)
-            min = vmed[i];
-    }
-
-    for (i = 0; i < 3; i++){
-        if (vmed[i] != max && vmed[i] != min)
-            mediana = vmed[i];
-    }
-
-    return mediana;
-
-}
-
 int Partition_mediana(std::vector<int> &v, int esquerda, int direita){
 
-    int mediana = achar_mediana(v);
+    // Achar a mediana
+    int tam = v.size();
+
+    if ( (v[0] >= v[tam/2] && v[0] <= v[tam - 1]) || (v[0] <= v[tam/2] && v[0] >= v[tam - 1]) )
+        mediana = 0;
     
-    int tam = sizeof(v)/4;
+    if ( (v[tam/2] >= v[0] && v[tam/2] <= v[tam - 1]) || (v[tam/2] <= v[0] && v[tam/2] >= v[tam - 1]) )
+        mediana = tam/2;
+
+    if ( (v[tam -1] >= v[0] && v[tam - 1] <= v[tam/2]) || (v[tam -1] <= v[0] && v[tam - 1] >= v[tam/2]) )
+        mediana = tam - 1;
+    
+    
     int pivo = v[mediana];
     int L = esquerda + 1;
     int R = direita;
@@ -66,8 +47,8 @@ int Partition_mediana(std::vector<int> &v, int esquerda, int direita){
 
 int Partition_fixo(std::vector<int> &v, int esquerda, int direita){
 
-    int tam = sizeof(v)/4;
-    int pivo = v[0];
+    int tam = v.size();
+    int pivo = v[esquerda];
     int L = esquerda + 1;
     int R = direita;
 
@@ -105,7 +86,9 @@ void QuickSort2 (std::vector<int> &v, int min, int max){
 }
 
 void QuickSort1 (std::vector<int> &v, int min, int max){
+
     while (min < max){
+
         int p = Partition_mediana (v, min, max);
 
         if (p - min < max - p){
@@ -121,7 +104,9 @@ void QuickSort1 (std::vector<int> &v, int min, int max){
 }
 
 void QuickSortPivo (std::vector<int> &v, int min, int max){
+
     while (min < max){
+
         int p = Partition_fixo (v, min, max);
 
         if (p - min < max - p){
@@ -146,7 +131,7 @@ void myquicksort_2recursion_medianOf3(std::vector<int> &v, SortStats &stats) {
     // you may set custom1 field if you want to measure anything else.
     stats.custom1 = 2;
 
-    int tam = sizeof(v)/4;
+    int tam = v.size();
     int min = 0;
     int max = tam - 1;
 
@@ -164,7 +149,7 @@ void myquicksort_1recursion_medianOf3(std::vector<int> &v, SortStats &stats) {
     // you may set custom1 field if you want to measure anything else.
     stats.custom1 = 2;
 
-    int tam = sizeof(v)/4;
+    int tam = v.size();
     int min = 0;
     int max = tam - 1;
 
@@ -184,7 +169,7 @@ void myquicksort_fixedPivot(std::vector<int> &v, SortStats &stats) {
     // you may set custom1 field if you want to measure anything else.
     stats.custom1 = 2;
 
-    int tam = sizeof(v)/4;
+    int tam = v.size();
     int min = 0;
     int max = tam - 1;
 

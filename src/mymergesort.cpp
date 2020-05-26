@@ -9,45 +9,56 @@ void merge(std::vector<int> &v, std::vector<int> &aux, int inicio, int meio, int
 
     while (i2 <= meio && i3 <= fim){
 
-        if (v[i2] < v[i3])
+        if (v[i2] < v[i3]){
             aux[i1++] = v[i2++];
-
-        else
+        }
+        else{
             aux[i1++] = v[i3++];
+        }
     }
 
-    while (i2 <= meio)
+    while (i2 <= meio){
         aux[i1++] = v[i2++];
+    }
     
-    while (i3 <= meio)
+    while (i3 <= fim){
         aux[i1++] = v[i3++];
+    }
 
-    for (int j = inicio; j <= fim; j++)
+    for (int j = inicio; j <= fim; j++){
         v[j] = aux[j];
+    }
 
 }
 
 void MergeSortRecursivo(std::vector<int> &v, std::vector<int> &aux, int inicio, int fim){
+
     if (inicio < fim){
+
         int meio = (inicio + fim)/2;
         MergeSortRecursivo(v, aux, inicio, meio);
         MergeSortRecursivo(v, aux, meio + 1, fim);
         merge(v, aux, inicio, meio, fim);
+
     }    
 }
 
 void MergeSortIterativo(std::vector<int> &v, std::vector<int> &aux, int inicio, int fim){
+
     int b = 1; // b: tamanho de cada bloco 
+
     while (b < fim){
+
         int p = inicio;
+
         while (p + b <= fim){
 
             int r = fim;
             if (fim > p-1 + 2*b)
-                r = p-1 + 2*b;
+                r = p - 1 + 2*b;
 
             int meio = p + b - 1;
-            merge(v, aux, inicio, meio, fim);
+            merge(v, aux, p, meio, r);
             p += 2*b;
         }
 
@@ -64,7 +75,7 @@ void mymergesort_recursive(std::vector<int> &v, SortStats &stats) {
     // you may set custom1 field if you want to measure anything else.
     stats.custom1 = 2;
     
-    int tam = sizeof(v)/4;
+    int tam = v.size();
     int inicio = 0;
     int fim = tam - 1;
 
@@ -83,7 +94,7 @@ void mymergesort_iterative(std::vector<int> &v, SortStats &stats) {
     // you may set custom1 field if you want to measure anything else.
     stats.custom1 = 2;
 
-    int tam = sizeof(v)/4;
+    int tam = v.size();
     int inicio = 0;
     int fim = tam - 1;
     
