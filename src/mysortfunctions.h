@@ -8,14 +8,14 @@
 #include <sortauxfuncs.h>
 
 void merge(std::vector<int> &v, std::vector<int> &aux, int inicio, int meio, int fim);
-void MergeSortRecursivo(std::vector<int> &v, std::vector<int> &aux, int inicio, int fim);
+void MergeSortRecursivo(std::vector<int> &v, std::vector<int> &aux, int inicio, int fim, SortStats &stats);
 void MergeSortIterativo(std::vector<int> &v, std::vector<int> &aux, int inicio, int fim);
 
 int Partition_mediana(std::vector<int> &v, int esquerda, int direita);
 int Partition_fixo(std::vector<int> &v, int esquerda, int direita);
-void QuickSort2 (std::vector<int> &v, int min, int max);
-void QuickSort1 (std::vector<int> &v, int min, int max);
-void QuickSortPivo (std::vector<int> &v, int min, int max);
+void QuickSort2 (std::vector<int> &v, int min, int max, SortStats &stats);
+void QuickSort1 (std::vector<int> &v, int min, int max, SortStats &stats);
+void QuickSortPivo (std::vector<int> &v, int min, int max, SortStats &stats);
 
 /// the most comon quicksort, with 2 recursive calls
 void myquicksort_2recursion_medianOf3(std::vector<int> &v, SortStats &stats);

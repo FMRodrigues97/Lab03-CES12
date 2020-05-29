@@ -1,5 +1,7 @@
 
 #include <mysortfunctions.h>
+#include <math.h>
+#include <queue>
 
 void myradixsort(std::vector<int> &v, SortStats &stats) {
     // you need to set the counting of recursive recursive_calls
@@ -10,27 +12,37 @@ void myradixsort(std::vector<int> &v, SortStats &stats) {
     // you may set custom1 field if you want to measure anything else.
     stats.custom1 = 2;
 
-    RadixSort(std::vector<int> &v){
+    int bits = log2(v.size());
+    if (2^bits < v.size())
+        bits += 1;
+    
+    int d = log2(bits);
+    if (2^d < bits)
+        d += 1;
 
-        int tam = v.size();
-        int base = 2; //Binário
-        int queue q[2];
-        int factor;
-        int d;
-        int i, j, k;
+    std::queue <int> fila[1 << 4];
+    int mascara = (1 << 4) - 1;
+    int i, j, k = 0;
+    
+    for (i = 0; i < d; i++) {
+        for (j = 0; j < (int) v.size(); j++) {
 
+            if (i == 0) 
+                fila[v[j] & mascara].push(v[j]);
 
-        for (i = 0, factor = 1; i < d; factor *= base, i++){
-
-            for (j = 1; j <= n; j++)
-                q[(v[j]/factor) % base].enqueue(v[j]);
-
-            for (j = 0, k=1; j < base; j++)
-                while (!q[j].isEmpty())
-                    v[k++] = q[j].dequeue();
-
+            else 
+                fila[(v[j] >> (i * 4)) & mascara].push(v[j]);
         }
+        
+        for (j = 0, k = 0; j < (1 << 4); j++)
+            while (!fila[j].empty()) {
+                v[k++] = fila[j].front();
+                fila[j].pop();
+                stats.recursive_calls += 1;
+            }
 
     }
+
+    stats.depth_recursion_stack = (int)(log2(stats.recursive_calls + 1));
 
 }

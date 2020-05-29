@@ -1,5 +1,6 @@
 
 #include <mysortfunctions.h>
+#include <math.h>
 
 // you only need to mantain the headers. You can create aux funcs, objects, or create a generic quicksort that can work with different functions to select the pivot.
 
@@ -75,49 +76,55 @@ int Partition_fixo(std::vector<int> &v, int esquerda, int direita){
 
 }
 
-void QuickSort2 (std::vector<int> &v, int min, int max){
+void QuickSort2 (std::vector<int> &v, int min, int max, SortStats &stats){
+
+    stats.recursive_calls += 1;
 
     if (min < max){
 
         int p = Partition_mediana (v, min, max);
-        QuickSort2 (v, min, p - 1);
-        QuickSort2 (v, p + 1, max);
+        QuickSort2 (v, min, p - 1, stats);
+        QuickSort2 (v, p + 1, max, stats);
 
     }
 
 }
 
-void QuickSort1 (std::vector<int> &v, int min, int max){
+void QuickSort1 (std::vector<int> &v, int min, int max, SortStats &stats){
+
+    stats.recursive_calls += 1;
 
     while (min < max){
 
         int p = Partition_mediana (v, min, max);
 
         if (p - min < max - p){
-            QuickSort1 (v, min, p - 1);
+            QuickSort1 (v, min, p - 1, stats);
             min = p + 1;
         }
 
         else{
-            QuickSort1 (v, p + 1, max);
+            QuickSort1 (v, p + 1, max, stats);
             max = p - 1;
         }
     }
 }
 
-void QuickSortPivo (std::vector<int> &v, int min, int max){
+void QuickSortPivo (std::vector<int> &v, int min, int max, SortStats &stats){
+
+    stats.recursive_calls += 1;
 
     while (min < max){
 
         int p = Partition_fixo (v, min, max);
 
         if (p - min < max - p){
-            QuickSortPivo (v, min, p - 1);
+            QuickSortPivo (v, min, p - 1, stats);
             min = p + 1;
         }
 
         else{
-            QuickSortPivo (v, p + 1, max);
+            QuickSortPivo (v, p + 1, max, stats);
             max = p - 1;
         }
     }
@@ -137,7 +144,9 @@ void myquicksort_2recursion_medianOf3(std::vector<int> &v, SortStats &stats) {
     int min = 0;
     int max = tam - 1;
 
-    QuickSort2 (v, min, max);
+    QuickSort2 (v, min, max, stats);
+
+    stats.depth_recursion_stack = (int)(log2(stats.recursive_calls + 1));
 
 }// function myquicksort_2recursion_medianOf3
 
@@ -155,7 +164,9 @@ void myquicksort_1recursion_medianOf3(std::vector<int> &v, SortStats &stats) {
     int min = 0;
     int max = tam - 1;
 
-    QuickSort1 (v, min, max);
+    QuickSort1 (v, min, max, stats);
+
+    stats.depth_recursion_stack = (int)(log2(stats.recursive_calls + 1));
 
 } // function myquicksort_1recursion_medianOf3
 
@@ -175,6 +186,8 @@ void myquicksort_fixedPivot(std::vector<int> &v, SortStats &stats) {
     int min = 0;
     int max = tam - 1;
 
-    QuickSortPivo (v, min, max);
+    QuickSortPivo (v, min, max, stats);
+
+    stats.depth_recursion_stack = (int)(log2(stats.recursive_calls + 1));
 
 } // myquicksort_fixedPivot

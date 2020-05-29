@@ -32,13 +32,15 @@ void merge(std::vector<int> &v, std::vector<int> &aux, int inicio, int meio, int
 
 }
 
-void MergeSortRecursivo(std::vector<int> &v, std::vector<int> &aux, int inicio, int fim){
+void MergeSortRecursivo(std::vector<int> &v, std::vector<int> &aux, int inicio, int fim, SortStats &stats){
+
+    stats.recursive_calls += 1;
 
     if (inicio < fim){
 
         int meio = (inicio + fim)/2;
-        MergeSortRecursivo(v, aux, inicio, meio);
-        MergeSortRecursivo(v, aux, meio + 1, fim);
+        MergeSortRecursivo(v, aux, inicio, meio, stats);
+        MergeSortRecursivo(v, aux, meio + 1, fim, stats);
         merge(v, aux, inicio, meio, fim);
 
     }    
@@ -82,8 +84,9 @@ void mymergesort_recursive(std::vector<int> &v, SortStats &stats) {
 
     std::vector<int> aux(tam);
 
-    MergeSortRecursivo(v, aux, inicio, fim);
+    MergeSortRecursivo(v, aux, inicio, fim, stats);
 
+    stats.depth_recursion_stack = (int)(log2(stats.recursive_calls + 1));
 }
 
 void mymergesort_iterative(std::vector<int> &v, SortStats &stats) {
