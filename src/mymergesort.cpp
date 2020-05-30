@@ -73,10 +73,10 @@ void mymergesort_recursive(std::vector<int> &v, SortStats &stats) {
     // you need to set the counting of recursive recursive_calls
     stats.recursive_calls = 0;
     // you need to set the depth = the maximum height of the tree of recursion calls. 
-    stats.depth_recursion_stack = 1;
+    stats.depth_recursion_stack = 0;
     // the tester already knows the size of v and the algorithm name, it already measures time
     // you may set custom1 field if you want to measure anything else.
-    stats.custom1 = 2;
+    stats.custom1 = 0;
     
     int tam = v.size();
     int inicio = 0;

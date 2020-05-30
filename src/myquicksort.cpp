@@ -79,6 +79,7 @@ int Partition_fixo(std::vector<int> &v, int esquerda, int direita){
 void QuickSort2 (std::vector<int> &v, int min, int max, SortStats &stats){
 
     stats.recursive_calls += 1;
+    stats.custom1 += 1;
 
     if (min < max){
 
@@ -88,11 +89,17 @@ void QuickSort2 (std::vector<int> &v, int min, int max, SortStats &stats){
 
     }
 
+     if(stats.custom1 > stats.depth_recursion_stack) 
+        stats.depth_recursion_stack = stats.custom1;
+    
+    stats.custom1--;
+
 }
 
 void QuickSort1 (std::vector<int> &v, int min, int max, SortStats &stats){
 
     stats.recursive_calls += 1;
+    stats.custom1 += 1;
 
     while (min < max){
 
@@ -108,11 +115,18 @@ void QuickSort1 (std::vector<int> &v, int min, int max, SortStats &stats){
             max = p - 1;
         }
     }
+
+    if(stats.custom1 > stats.depth_recursion_stack) 
+        stats.depth_recursion_stack = stats.custom1;
+    
+    stats.custom1--;
+
 }
 
 void QuickSortPivo (std::vector<int> &v, int min, int max, SortStats &stats){
 
     stats.recursive_calls += 1;
+    stats.custom1 += 1;
 
     while (min < max){
 
@@ -128,17 +142,23 @@ void QuickSortPivo (std::vector<int> &v, int min, int max, SortStats &stats){
             max = p - 1;
         }
     }
+
+    if(stats.custom1 > stats.depth_recursion_stack) 
+        stats.depth_recursion_stack = stats.custom1;
+    
+    stats.custom1--;
+
 }
 
 /// the most comon quicksort, with 2 recursive calls
 void myquicksort_2recursion_medianOf3(std::vector<int> &v, SortStats &stats) {
     // you need to set the counting of recursive recursive_calls
-    stats.recursive_calls = 1;
+    stats.recursive_calls = 0;
     // you need to set the depth = the maximum height of the tree of recursion calls. 
-    stats.depth_recursion_stack = 1;
+    stats.depth_recursion_stack = 0;
     // the tester already knows the size of v and the algorithm name, it already measures time
     // you may set custom1 field if you want to measure anything else.
-    stats.custom1 = 2;
+    stats.custom1 = 0;
 
     int tam = v.size();
     int min = 0;
@@ -146,27 +166,23 @@ void myquicksort_2recursion_medianOf3(std::vector<int> &v, SortStats &stats) {
 
     QuickSort2 (v, min, max, stats);
 
-    stats.depth_recursion_stack = (int)(log2(stats.recursive_calls + 1));
-
 }// function myquicksort_2recursion_medianOf3
 
 /// quicksort with one recursive call
 void myquicksort_1recursion_medianOf3(std::vector<int> &v, SortStats &stats) {
     // you need to set the counting of recursive recursive_calls
-    stats.recursive_calls = 1;
+    stats.recursive_calls = 0;
     // you need to set the depth = the maximum height of the tree of recursion calls. 
-    stats.depth_recursion_stack = 1;
+    stats.depth_recursion_stack = 0;
     // the tester already knows the size of v and the algorithm name, it already measures time
     // you may set custom1 field if you want to measure anything else.
-    stats.custom1 = 2;
+    stats.custom1 = 0;
 
     int tam = v.size();
     int min = 0;
     int max = tam - 1;
 
     QuickSort1 (v, min, max, stats);
-
-    stats.depth_recursion_stack = (int)(log2(stats.recursive_calls + 1));
 
 } // function myquicksort_1recursion_medianOf3
 
@@ -175,19 +191,17 @@ void myquicksort_1recursion_medianOf3(std::vector<int> &v, SortStats &stats) {
 /// e.g., if you do 1 recursive call, compare with the 1recursion version
 void myquicksort_fixedPivot(std::vector<int> &v, SortStats &stats) {
     // you need to set the counting of recursive recursive_calls
-    stats.recursive_calls = 1;
+    stats.recursive_calls = 0;
     // you need to set the depth = the maximum height of the tree of recursion calls. 
-    stats.depth_recursion_stack = 1;
+    stats.depth_recursion_stack = 0;
     // the tester already knows the size of v and the algorithm name, it already measures time
     // you may set custom1 field if you want to measure anything else.
-    stats.custom1 = 2;
+    stats.custom1 = 0;
 
     int tam = v.size();
     int min = 0;
     int max = tam - 1;
 
     QuickSortPivo (v, min, max, stats);
-
-    stats.depth_recursion_stack = (int)(log2(stats.recursive_calls + 1));
 
 } // myquicksort_fixedPivot
